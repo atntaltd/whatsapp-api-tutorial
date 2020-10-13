@@ -14,7 +14,9 @@
   "author": "Nur Muhammad",
   "license": "MIT",
   "dependencies": {
+    "axios": "^0.20.0",
     "express": "^4.17.1",
+    "express-fileupload": "^1.2.0",
     "express-validator": "^6.6.1",
     "http": "0.0.1-security",
     "qrcode": "^1.4.4",
