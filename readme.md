@@ -16,3 +16,7 @@ Watch the tutorials:
 - Open browser and go to address `http://localhost:8000`
 - Scan the QR Code
 - Enjoy!
+
+### Notes
+As mentioned in the video above, you have installed `nodemon` to run the start script.
+You can install nodemon globally with `npm i -g nodemon` command.
