@@ -22,5 +22,11 @@
     "qrcode": "^1.4.4",
     "socket.io": "^2.3.0",
     "whatsapp-web.js": "^1.11.0"
+  },
+  "engines": {
+    "node": "v12.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.6"
   }
 }
