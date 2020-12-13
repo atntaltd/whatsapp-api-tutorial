@@ -18,13 +18,28 @@ app.use(express.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-  res.sendFile('index.html', {
+  res.sendFile('index-multiple-device.html', {
     root: __dirname
   });
 });
 
 const sessions = [];
-const createSession = function(id, description, io) {
+const SESSIONS_FILE = './whatsapp-sessions.json';
+
+const setSessionsFile = function(sessions) {
+  fs.writeFile(SESSIONS_FILE, JSON.stringify(sessions), function(err) {
+    if (err) {
+      console.log(err);
+    }
+  });
+}
+
+const getSessionsFile = function() {
+  return JSON.parse(fs.readFileSync(SESSIONS_FILE));
+}
+
+const createSession = function(id, description) {
+  console.log('Creating session: ' + id);
   const SESSION_FILE_PATH = `./whatsapp-session-${id}.json`;
   let sessionCfg;
   if (fs.existsSync(SESSION_FILE_PATH)) {
@@ -62,6 +77,11 @@ const createSession = function(id, description, io) {
   client.on('ready', () => {
     io.emit('ready', { id: id });
     io.emit('message', { id: id, text: 'Whatsapp is ready!' });
+
+    const savedSessions = getSessionsFile();
+    const sessionIndex = savedSessions.findIndex(sess => sess.id == id);
+    savedSessions[sessionIndex].ready = true;
+    setSessionsFile(savedSessions);
   });
 
   client.on('authenticated', (session) => {
@@ -87,6 +107,14 @@ const createSession = function(id, description, io) {
     });
     client.destroy();
     client.initialize();
+
+    // Menghapus pada file sessions
+    const savedSessions = getSessionsFile();
+    const sessionIndex = savedSessions.findIndex(sess => sess.id == id);
+    savedSessions.splice(sessionIndex, 1);
+    setSessionsFile(savedSessions);
+
+    io.emit('remove-session', id);
   });
 
   // Tambahkan client ke sessions
@@ -95,13 +123,44 @@ const createSession = function(id, description, io) {
     description: description,
     client: client
   });
+
+  // Menambahkan session ke file
+  const savedSessions = getSessionsFile();
+  const sessionIndex = savedSessions.findIndex(sess => sess.id == id);
+
+  if (sessionIndex == -1) {
+    savedSessions.push({
+      id: id,
+      description: description,
+      ready: false,
+    });
+    setSessionsFile(savedSessions);
+  }
 }
+
+const init = function(socket) {
+  const savedSessions = getSessionsFile();
+
+  if (savedSessions.length > 0) {
+    if (socket) {
+      socket.emit('init', savedSessions);
+    } else {
+      savedSessions.forEach(sess => {
+        createSession(sess.id, sess.description);
+      });
+    }
+  }
+}
+
+init();
 
 // Socket IO
 io.on('connection', function(socket) {
+  init(socket);
+
   socket.on('create-session', function(data) {
     console.log('Create session: ' + data.id);
-    createSession(data.id, data.description, io);
+    createSession(data.id, data.description);
   });
 });
 
