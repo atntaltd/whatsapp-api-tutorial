@@ -18,16 +18,16 @@
     "axios": "^0.20.0",
     "express": "^4.17.1",
     "express-fileupload": "^1.2.0",
-    "express-validator": "^6.7.0",
+    "express-validator": "^6.9.2",
     "http": "0.0.1-security",
     "qrcode": "^1.4.4",
-    "socket.io": "^2.3.0",
-    "whatsapp-web.js": "^1.11.1"
+    "socket.io": "2.3.0",
+    "whatsapp-web.js": "latest"
   },
   "engines": {
     "node": "v12.10.0"
   },
   "devDependencies": {
-    "nodemon": "^2.0.6"
+    "nodemon": "^2.0.7"
   }
 }

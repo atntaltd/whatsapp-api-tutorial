@@ -1,3 +1,4 @@
 node_modules
 whatsapp-session-*.json
 whatsapp-sessions.json
+package-lock.json
