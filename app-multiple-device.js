@@ -26,6 +26,19 @@ app.get('/', (req, res) => {
 const sessions = [];
 const SESSIONS_FILE = './whatsapp-sessions.json';
 
+const createSessionsFileIfNotExists = function() {
+  if (!fs.existsSync(SESSIONS_FILE)) {
+    try {
+      fs.writeFileSync(SESSIONS_FILE, JSON.stringify([]));
+      console.log('Sessions file created successfully.');
+    } catch(err) {
+      console.log('Failed to create sessions file: ', err);
+    }
+  }
+}
+
+createSessionsFileIfNotExists();
+
 const setSessionsFile = function(sessions) {
   fs.writeFile(SESSIONS_FILE, JSON.stringify(sessions), function(err) {
     if (err) {
