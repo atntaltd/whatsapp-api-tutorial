@@ -204,11 +204,24 @@ app.post('/send-media', async (req, res) => {
   });
 });
 
+const findGroupByName = async function(name) {
+  const group = await client.getChats().then(chats => {
+    return chats.find(chat => 
+      chat.isGroup && chat.name.toLowerCase() == name.toLowerCase()
+    );
+  });
+  return group;
+}
+
 // Send message to group
-// -- Send message !groups to get all groups (id & name)
-// -- So you can use that group id to send a message
+// You can use chatID or group name, yea!
 app.post('/send-group-message', [
-  body('id').notEmpty(),
+  body('id').custom((value, { req }) => {
+    if (!value && !req.body.name) {
+      throw new Error('Invalid value, you can use `id` or `name`');
+    }
+    return true;
+  }),
   body('message').notEmpty(),
 ], async (req, res) => {
   const errors = validationResult(req).formatWith(({
@@ -224,8 +237,21 @@ app.post('/send-group-message', [
     });
   }
 
-  const chatId = req.body.id;
+  let chatId = req.body.id;
+  const groupName = req.body.name;
   const message = req.body.message;
+
+  // Find the group by name
+  if (!chatId) {
+    const group = await findGroupByName(groupName);
+    if (!group) {
+      return res.status(422).json({
+        status: false,
+        message: 'No group found with name: ' + groupName
+      });
+    }
+    chatId = group.id._serialized;
+  }
 
   client.sendMessage(chatId, message).then(response => {
     res.status(200).json({
