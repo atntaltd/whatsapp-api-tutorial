@@ -28,7 +28,7 @@ You can send the message to any group by using `chatID` or group `name`, chatID 
 
 **Paramaters:**
 
-- `id` (optinal if name given): the chat ID
+- `id` (optional if name given): the chat ID
 - `name` (optional): group name
 - `message`: the message
 
