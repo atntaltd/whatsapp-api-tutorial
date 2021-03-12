@@ -1,3 +1,9 @@
+# Heroku Branch
+
+This branch specially for using on Heroku. The main different is the way to storing the session file. Becuase we can't make any changes to Heroku's file system, so we use Postgres to store our session data. 
+
+Please follow the tutorial below for details.
+
 # Whatsapp API Tutorial
 
 Hi, this is the implementation example of <a href="https://github.com/pedroslopez/whatsapp-web.js">whatsapp-web.js</a>
@@ -11,6 +17,7 @@ Watch the tutorials:
 - <a href="https://youtu.be/uSzjbuaHexk">Whatsapp API Tutorial: Deploy to Heroku</a>
 - <a href="https://youtu.be/5VfM9PvrYcE">Whatsapp API Tutorial: Multiple Device</a>
 - <a href="https://youtu.be/Cq8ru8iKAVk">Whatsapp API Tutorial: Multiple Device | Part 2</a>
+- <a href="https://youtu.be/bgxxUWqW6WU">Whatsapp API Tutorial: Fix Heroku Session</a>
 
 ### How to use?
 
