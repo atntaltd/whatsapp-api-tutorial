@@ -1,6 +1,6 @@
 # Heroku Branch
 
-This branch specially for using on Heroku. The main different is the way to storing the session file. Becuase we can't make any changes to Heroku's file system, so we use Postgres to store our session data. 
+This branch specially for using on Heroku. The main different is the way to storing the session file. Because we can't make any changes to Heroku's file system, so we use Postgres to store our session data. 
 
 Please follow the tutorial below for details.
 
