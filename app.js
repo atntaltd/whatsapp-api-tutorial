@@ -52,11 +52,14 @@ const client = new Client({
   session: sessionCfg
 });
 
-client.on('message', msg => {
-  if (msg.body == '!ping') {
-    msg.reply('pong');
-  } else if (msg.body == 'good morning') {
-    msg.reply('selamat pagi');
+const db = require('./helpers/db');
+
+client.on('message', async msg => {
+  const keyword = msg.body.toLowerCase();
+  const replyMessage = await db.getReply(keyword);
+
+  if (replyMessage !== false) {
+    msg.reply(replyMessage);
   } else if (msg.body == '!groups') {
     client.getChats().then(chats => {
       const groups = chats.filter(chat => chat.isGroup);

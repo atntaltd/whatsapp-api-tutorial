@@ -20,6 +20,7 @@
     "express-fileupload": "^1.2.0",
     "express-validator": "^6.9.2",
     "http": "0.0.1-security",
+    "mysql2": "^2.2.5",
     "qrcode": "^1.4.4",
     "socket.io": "2.3.0",
     "whatsapp-web.js": "latest"
