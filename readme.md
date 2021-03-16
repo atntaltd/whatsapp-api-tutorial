@@ -12,7 +12,7 @@ Watch the tutorials:
 - <a href="https://youtu.be/5VfM9PvrYcE">Whatsapp API Tutorial: Multiple Device</a>
 - <a href="https://youtu.be/Cq8ru8iKAVk">Whatsapp API Tutorial: Multiple Device | Part 2</a>
 - <a href="https://youtu.be/bgxxUWqW6WU">Whatsapp API Tutorial: Fix Heroku Session</a>
-- <a href="https://youtu.be/rf1nhmbqyW4">Whatsapp API Tutorial: Dynamic Message Reply</a>
+- <a href="https://youtu.be/iode8kstDYQ">Whatsapp API Tutorial: Dynamic Message Reply</a>
 
 ### How to use?
 
