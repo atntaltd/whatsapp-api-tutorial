@@ -37,6 +37,7 @@ app.get('/', (req, res) => {
 const client = new Client({
   restartOnAuthFail: true,
   puppeteer: {
+    executablePath: '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
     headless: true,
     args: [
       '--no-sandbox',
@@ -53,7 +54,6 @@ const client = new Client({
 });
 
 client.on('message', msg => {
-  console.log(msg);
   if (msg.body == '!ping') {
     msg.reply('pong');
   } else if (msg.body == 'good morning') {
@@ -67,6 +67,9 @@ client.on('message', msg => {
   } else if (msg.body == '!audio') {
     const media = MessageMedia.fromFilePath('./basmallah.mp3');
     msg.reply(media, null, { sendAudioAsVoice: true });
+  } else if (msg.body == '!video') {
+    const media = MessageMedia.fromFilePath('./subscribe.mp4');
+    msg.reply(media, null, { sendMediaAsSticker: true });
   } else if (msg.body == '!groups') {
     client.getChats().then(chats => {
       const groups = chats.filter(chat => chat.isGroup);
