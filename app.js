@@ -66,7 +66,7 @@ client.on('message', msg => {
     });
   } else if (msg.body == '!audio') {
     const media = MessageMedia.fromFilePath('./basmallah.mp3');
-    msg.reply(media);
+    msg.reply(media, null, { sendAudioAsVoice: true });
   } else if (msg.body == '!groups') {
     client.getChats().then(chats => {
       const groups = chats.filter(chat => chat.isGroup);
