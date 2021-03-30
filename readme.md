@@ -41,3 +41,7 @@ Here the way to get the groups info (including ID & name):
 - Send a message to the API number `!groups`
 - The API will replying with the groups info
 - Use the ID to send a message
+
+## Support Me
+
+You can make a support for this work by <a href="https://karyakarsa.com/ngekoding/">Karya Karsa</a>. Thanks
