@@ -42,6 +42,14 @@ Here the way to get the groups info (including ID & name):
 - The API will replying with the groups info
 - Use the ID to send a message
 
+### Downloading media
+
+I add an example to downloading the message media if exists. Please check it in `on message` event!
+
+We use `mime-types` package to get the file extension by it's mimetype, so we can download all of the type of media message.
+
+And we decided (for this example) to use time as the filename, because the media filename is not certain exists.
+
 ## Support Me
 
 You can make a support for this work by <a href="https://karyakarsa.com/ngekoding/">Karya Karsa</a>. Thanks

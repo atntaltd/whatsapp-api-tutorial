@@ -20,12 +20,10 @@
     "express-fileupload": "^1.2.0",
     "express-validator": "^6.9.2",
     "http": "0.0.1-security",
+    "mime-types": "^2.1.32",
     "qrcode": "^1.4.4",
     "socket.io": "2.3.0",
     "whatsapp-web.js": "latest"
-  },
-  "engines": {
-    "node": "v12.10.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.7"
