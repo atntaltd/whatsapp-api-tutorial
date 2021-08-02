@@ -9,7 +9,6 @@ const { phoneNumberFormatter } = require('./helpers/formatter');
 const fileUpload = require('express-fileupload');
 const axios = require('axios');
 const mime = require('mime-types');
-const { Z_ERRNO } = require('zlib');
 
 const port = process.env.PORT || 8000;
 
