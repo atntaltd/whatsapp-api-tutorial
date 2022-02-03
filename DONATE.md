@@ -14,4 +14,6 @@ For international transfer purpose, you may needs this information also:
 - Address: **Plaza Mandiri Jl Gatot Subroto Kav 36-38 Jakarta 12190**
 - SWIFT code: **BMRIIDJA**
 
+Feel free to [contact me by Whatsapp](https://wa.me/6287864423038). Maybe for the transfer confirmation, so I know about your support.
+
 Thanks in advance.
