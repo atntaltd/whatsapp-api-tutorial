@@ -1,4 +1,4 @@
-const { Client, MessageMedia } = require('whatsapp-web.js');
+const { Client, MessageMedia, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const socketIO = require('socket.io');
 const qrcode = require('qrcode');
@@ -18,7 +18,7 @@ app.use(express.urlencoded({
 }));
 
 app.get('/', (req, res) => {
-  res.sendFile('index-multiple-device.html', {
+  res.sendFile('index-multiple-account.html', {
     root: __dirname
   });
 });
@@ -53,12 +53,6 @@ const getSessionsFile = function() {
 
 const createSession = function(id, description) {
   console.log('Creating session: ' + id);
-  const SESSION_FILE_PATH = `./whatsapp-session-${id}.json`;
-  let sessionCfg;
-  if (fs.existsSync(SESSION_FILE_PATH)) {
-    sessionCfg = require(SESSION_FILE_PATH);
-  }
-
   const client = new Client({
     restartOnAuthFail: true,
     puppeteer: {
@@ -74,7 +68,9 @@ const createSession = function(id, description) {
         '--disable-gpu'
       ],
     },
-    session: sessionCfg
+    authStrategy: new LocalAuth({
+      clientId: id
+    })
   });
 
   client.initialize();
@@ -97,27 +93,17 @@ const createSession = function(id, description) {
     setSessionsFile(savedSessions);
   });
 
-  client.on('authenticated', (session) => {
+  client.on('authenticated', () => {
     io.emit('authenticated', { id: id });
     io.emit('message', { id: id, text: 'Whatsapp is authenticated!' });
-    sessionCfg = session;
-    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
-      if (err) {
-        console.error(err);
-      }
-    });
   });
 
-  client.on('auth_failure', function(session) {
+  client.on('auth_failure', function() {
     io.emit('message', { id: id, text: 'Auth failure, restarting...' });
   });
 
   client.on('disconnected', (reason) => {
     io.emit('message', { id: id, text: 'Whatsapp is disconnected!' });
-    fs.unlinkSync(SESSION_FILE_PATH, function(err) {
-        if(err) return console.log(err);
-        console.log('Session file deleted!');
-    });
     client.destroy();
     client.initialize();
 

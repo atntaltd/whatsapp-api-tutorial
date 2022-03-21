@@ -1,4 +1,4 @@
-const { Client, MessageMedia } = require('whatsapp-web.js');
+const { Client, MessageMedia, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const socketIO = require('socket.io');
@@ -24,12 +24,6 @@ app.use(fileUpload({
   debug: true
 }));
 
-const SESSION_FILE_PATH = './whatsapp-session.json';
-let sessionCfg;
-if (fs.existsSync(SESSION_FILE_PATH)) {
-  sessionCfg = require(SESSION_FILE_PATH);
-}
-
 app.get('/', (req, res) => {
   res.sendFile('index.html', {
     root: __dirname
@@ -51,7 +45,7 @@ const client = new Client({
       '--disable-gpu'
     ],
   },
-  session: sessionCfg
+  authStrategy: new LocalAuth()
 });
 
 client.on('message', msg => {
@@ -133,16 +127,10 @@ io.on('connection', function(socket) {
     socket.emit('message', 'Whatsapp is ready!');
   });
 
-  client.on('authenticated', (session) => {
+  client.on('authenticated', () => {
     socket.emit('authenticated', 'Whatsapp is authenticated!');
     socket.emit('message', 'Whatsapp is authenticated!');
-    console.log('AUTHENTICATED', session);
-    sessionCfg = session;
-    fs.writeFile(SESSION_FILE_PATH, JSON.stringify(session), function(err) {
-      if (err) {
-        console.error(err);
-      }
-    });
+    console.log('AUTHENTICATED');
   });
 
   client.on('auth_failure', function(session) {
@@ -151,10 +139,6 @@ io.on('connection', function(socket) {
 
   client.on('disconnected', (reason) => {
     socket.emit('message', 'Whatsapp is disconnected!');
-    fs.unlinkSync(SESSION_FILE_PATH, function(err) {
-        if(err) return console.log(err);
-        console.log('Session file deleted!');
-    });
     client.destroy();
     client.initialize();
   });
