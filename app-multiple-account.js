@@ -5,6 +5,7 @@ const qrcode = require('qrcode');
 const http = require('http');
 const fs = require('fs');
 const { phoneNumberFormatter } = require('./helpers/formatter');
+const fileUpload = require('express-fileupload');
 const axios = require('axios');
 const port = process.env.PORT || 8000;
 
@@ -15,6 +16,18 @@ const io = socketIO(server);
 app.use(express.json());
 app.use(express.urlencoded({
   extended: true
+}));
+
+/**
+ * BASED ON MANY QUESTIONS
+ * Actually ready mentioned on the tutorials
+ * 
+ * The two middlewares above only handle for data json & urlencode (x-www-form-urlencoded)
+ * So, we need to add extra middleware to handle form-data
+ * Here we can use express-fileupload
+ */
+app.use(fileUpload({
+  debug: false
 }));
 
 app.get('/', (req, res) => {
@@ -165,6 +178,8 @@ io.on('connection', function(socket) {
 
 // Send message
 app.post('/send-message', async (req, res) => {
+  console.log(req);
+
   const sender = req.body.sender;
   const number = phoneNumberFormatter(req.body.number);
   const message = req.body.message;
