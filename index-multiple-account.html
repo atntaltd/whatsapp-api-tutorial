@@ -51,9 +51,20 @@
 			$('.add-client-btn').click(function() {
 				var clientId = $('#client-id').val();
 				var clientDescription = $('#client-description').val();
+
+        /**
+         * Some peoples want to use the phone number as the ID
+         * But because we use the ID as the html class attribute value: class="<The ID>"
+         * It won't work. Read more on https://www.w3.org/TR/REC-html40/types.html#type-cdata
+         * 
+         * So, here we add the prefix to solve that problem
+         * Each ID will automatically added a 'client-' prefix for the class attribute
+         */
+        var clientClass = 'client-' + clientId;
 				var template = $('.client').first().clone()
 										   .removeClass('hide')
-										   .addClass(clientId);
+										   .addClass(clientClass);
+
 				template.find('.title').html(clientId);
 				template.find('.description').html(clientDescription);
 				$('.client-container').append(template);
@@ -72,40 +83,43 @@
 
 					var clientId = session.id;
 					var clientDescription = session.description;
+
+          var clientClass = 'client-' + clientId;
 					var template = $('.client').first().clone()
 											   .removeClass('hide')
-											   .addClass(clientId);
+											   .addClass(clientClass);
+
 					template.find('.title').html(clientId);
 					template.find('.description').html(clientDescription);
 					$('.client-container').append(template);
 
 					if (session.ready) {
-						$(`.client.${session.id} .logs`).append($('<li>').text('Whatsapp is ready!'));
+						$(`.client.${clientClass} .logs`).append($('<li>').text('Whatsapp is ready!'));
 					} else {
-						$(`.client.${session.id} .logs`).append($('<li>').text('Connecting...'));
+						$(`.client.${clientClass} .logs`).append($('<li>').text('Connecting...'));
 					}
 				}
 			});
 
 			socket.on('remove-session', function(id) {
-				$(`.client.${id}`).remove();
+				$(`.client.client-${id}`).remove();
 			});
 
 			socket.on('message', function(data) {
-				$(`.client.${data.id} .logs`).append($('<li>').text(data.text));
+				$(`.client.client-${data.id} .logs`).append($('<li>').text(data.text));
 			});
 
 			socket.on('qr', function(data) {
-				$(`.client.${data.id} #qrcode`).attr('src', data.src);
-				$(`.client.${data.id} #qrcode`).show();
+				$(`.client.client-${data.id} #qrcode`).attr('src', data.src);
+				$(`.client.client-${data.id} #qrcode`).show();
 			});
 
 			socket.on('ready', function(data) {
-				$(`.client.${data.id} #qrcode`).hide();
+				$(`.client.client-${data.id} #qrcode`).hide();
 			});
 
 			socket.on('authenticated', function(data) {
-				$(`.client.${data.id} #qrcode`).hide();
+				$(`.client.client-${data.id} #qrcode`).hide();
 			});
 		});
 	</script>
