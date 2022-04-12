@@ -155,6 +155,17 @@ const init = function(socket) {
 
   if (savedSessions.length > 0) {
     if (socket) {
+      /**
+       * At the first time of running (e.g. restarting the server), our client is not ready yet!
+       * It will need several time to authenticating.
+       * 
+       * So to make people not confused for the 'ready' status
+       * We need to make it as FALSE for this condition
+       */
+      savedSessions.forEach((e, i, arr) => {
+        arr[i].ready = false;
+      });
+
       socket.emit('init', savedSessions);
     } else {
       savedSessions.forEach(sess => {
