@@ -20,8 +20,16 @@ app.use(express.json());
 app.use(express.urlencoded({
   extended: true
 }));
+
+/**
+ * BASED ON MANY QUESTIONS
+ * Actually ready mentioned on the tutorials
+ * 
+ * Many people confused about the warning for file-upload
+ * So, we just disabling the debug for simplicity.
+ */
 app.use(fileUpload({
-  debug: true
+  debug: false
 }));
 
 app.get('/', (req, res) => {
